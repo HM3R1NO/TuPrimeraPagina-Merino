@@ -10,4 +10,5 @@ urlpatterns = [
 
     #url de formularios
     path("cursoForm/", cursoForm,name="cursoForm"),
+    path("estudianteForm/",estudianteForm, name="estudianteForm")
 ]
