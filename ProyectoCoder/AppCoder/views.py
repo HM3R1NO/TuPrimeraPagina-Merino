@@ -13,7 +13,7 @@ def inicio(request):
     return render(request, "AppCoder/index.html")
 
 def cursos(request):
-    return HttpResponse('vista cursos')
+    return render(request, "AppCoder/cursos.html")
 
 def profesores(request):
     return HttpResponse('vista profesores')
@@ -23,3 +23,21 @@ def estudiantes(request):
 
 def entregables(request):
     return HttpResponse('vista entregables')
+
+def cursoForm(request):
+    if request.method == "POST":
+        curso=Curso(nombre=request.POST["nombre"], camada=request.POST["camada"]) #En la clase al profe le falto asignar las variables(nombre=...,camada=...) y por eso daba error.
+        curso.save()
+        return render(request, "AppCoder/index.html")
+    return render(request, "AppCoder/cursoForm.html")
+
+# def cursoForm(request):
+#     if request.method == "POST":
+#         print(request.POST)  # Imprimir todo el diccionario request.POST
+#         nombre = request.POST.get("nombre")  # Obtener el valor de "nombre"
+#         camada = request.POST.get("camada")  # Obtener el valor de "camada"
+#         print(f"Nombre: {nombre}, Camada: {camada}")  # Imprimir los valores específicos
+#         curso = Curso(nombre=nombre, camada=camada)
+#         curso.save()
+#         return render(request, "AppCoder/index.html")
+#     return render(request, "AppCoder/cursoForm.html")

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Landing Page - Start Bootstrap Theme</title>
+        <title>Landing Page - {% block titulo %}{% endblock titulo %}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -20,8 +20,9 @@
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
-                <a class="text-danger" href=""> Cursos</a>
+                <a class="navbar-brand" href='{% url "inicio" %}''>Start Bootstrap</a>
+                <a class="text-danger" href='{% url "cursos" %}'> Cursos</a>
+                <a class="text-success" href='{% url "cursoForm" %}'> Curso Form</a>
                 <a class="text-warning" href="">Entregable</a>
                 <a class="text-gray" href="">Sign Up</a>
                 <a class="btn btn-primary" href="">Sign Up</a>
@@ -77,6 +78,7 @@
         </header>
         <!-- Icons Grid-->
         <section class="features-icons bg-light text-center">
+            {% block cuerpo %}{% endblock cuerpo %}
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4">

@@ -1,0 +1,16 @@
+{% extends "AppCoder/index.html" %}
+{% load static %}
+
+{% block titulo %}Curso Form{% endblock titulo %}
+
+
+
+{% block cuerpo %}
+<h1 class="text-bg-info">Soy un Formulario</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <p>Curso: <input type="text" name="nombre"></p>
+    <p>Camada: <input type="number" name="camada"></p>
+    <input type="submit" value="Enviar">
+</form>
+{% endblock cuerpo %}
