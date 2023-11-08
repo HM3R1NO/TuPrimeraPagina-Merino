@@ -1,0 +1,26 @@
+{% extends 'AppCoder/index.html'%}
+{% load static %}
+
+
+{% block titulo%}Aficionado Form{% endblock titulo%}
+
+{% block cuerpo %}
+    <h1 class="text-center text-white">Soy un Formulario</h1>
+    <h1 class="text-center text-white">Aficionado Form</h1>
+    <div class="container mt-2 text-white">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="" method="post" class="text-center">
+                    {% csrf_token %}
+                    <table class="mx-auto">
+                        {{ miFormulario.as_table }}
+                    </table>
+                    <div class="text-center mt-2">
+                        <input type="submit" value="Enviar" class= "btn text-white btn-sm" disabled>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock cuerpo %}
+

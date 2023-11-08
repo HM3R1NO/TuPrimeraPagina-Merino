@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Grayscale - Start Bootstrap Theme</title>
+        <title>Landing Page -{% block title %}{% endblock title %}</title>
         <link rel="icon" type="image/x-icon" href="{% static 'CoderApp/assets/favicon.ico' %}" />
         <!--link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -28,9 +28,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'aficionado' %}">Aficionado</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'aventurero' %}">Aventurero</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'instructor' %}">Instructor</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#signup">SingUp</a></li>
                     </ul>
                 </div>
             </div>
@@ -49,8 +51,10 @@
         </header>
         <!-- About-->
         <section class="about-section text-center" id="about">
+            {% block cuerpo%}{% endblock cuerpo%}
+            <br>
             <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
+                <!--<div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8">
                         <h2 class="text-white mb-4">Built with Bootstrap 5</h2>
                         <p class="text-white-50">
@@ -58,7 +62,7 @@
                             <a href="https://startbootstrap.com/theme/grayscale/">the preview page.</a>
                             The theme is open source, and you can use it for any purpose, personal or commercial.
                         </p>
-                    </div>
+                    </div>-->
                 </div>
                 <img class="img-fluid" src="{% static 'CoderApp/assets/img/ipad.png'%}" alt="..." />
             </div>
