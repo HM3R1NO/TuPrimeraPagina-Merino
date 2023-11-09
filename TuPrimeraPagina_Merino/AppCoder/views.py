@@ -9,8 +9,7 @@ def inicio(request):
 
 def aficionadoForm(request):
     if request.method == 'POST':
-        miFormulario = AficionadoForm(request.POST) #<- traigo del template los datos de los input
-        print(miFormulario)
+        miFormulario = AficionadoForm(request.POST) 
         if miFormulario.is_valid():
             info = miFormulario.cleaned_data
             info = Aficionado(nombre = info['nombre'], apellido = info['apellido'], edad = info['edad'])
@@ -22,8 +21,7 @@ def aficionadoForm(request):
 
 def aventureroForm(request):
     if request.method == 'POST':
-        miFormulario = AventureroForm(request.POST) #<- traigo del template los datos de los input
-        print(miFormulario)
+        miFormulario = AventureroForm(request.POST) 
         if miFormulario.is_valid():
             info = miFormulario.cleaned_data
             info = Aventurero(nombre = info['nombre'], apellido = info['apellido'], edad = info['edad'])
@@ -35,8 +33,7 @@ def aventureroForm(request):
 
 def instructorForm(request):
     if request.method == 'POST':
-        miFormulario = InstructorForm(request.POST) #<- traigo del template los datos de los input
-        print(miFormulario)
+        miFormulario = InstructorForm(request.POST) 
         if miFormulario.is_valid():
             info = miFormulario.cleaned_data
             info = Instructor(nombre = info['nombre'], apellido = info['apellido'], edad = info['edad'], email= info['email'])
