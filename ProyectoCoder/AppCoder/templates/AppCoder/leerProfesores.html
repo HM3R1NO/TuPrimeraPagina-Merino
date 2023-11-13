@@ -1,0 +1,28 @@
+{% extends "AppCoder/index.html" %}
+{% load static %}
+
+{% block titulo %}Leer Profesores Form{% endblock titulo %}
+
+{% block cuerpo %}
+<h1 class="text-center">Profesores</h1>
+    <div class="container mt-2">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {% if miFormulario.errors %}
+                    <p style="color: red">Estan mal los datos, revisar</p>
+                {% endif %}
+                <a class="btn btn-warning" href="{% url 'profesorForm' %}"> Crear Profe</a>
+                
+                {% for p in profesores %}
+                    <li>{{p}}</li>
+                    <button>
+                        <a class="btn btn-dark" href="{% url 'eliminarProfesor' p.nombre %}">Eliminar</a>
+                        <a class="btn btn-dark" href="{% url 'editarProfesor' p.nombre %}">Editar</a>
+                    </button>
+                {% endfor %}
+                <br>
+            </div>
+        </div>
+    </div>
+
+{% endblock cuerpo %}

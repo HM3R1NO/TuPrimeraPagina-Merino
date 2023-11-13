@@ -1,0 +1,12 @@
+{% extends "AppCoder/index.html" %}
+{% load static %}
+{% block cuerpo %}
+<h1>Crear Curso</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Crear">
+</form>
+{% endblock cuerpo  %}
+

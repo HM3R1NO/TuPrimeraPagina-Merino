@@ -1,7 +1,14 @@
 from django.shortcuts import render
-from AppCoder.models import Curso, Estudiante
-from AppCoder.forms import EstudianteForm
+from AppCoder.models import *
+from AppCoder.forms import *
 from django.http import HttpResponse
+
+#Vistas Basadas en Clases (CVB)
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView ,UpdateView, DeleteView
+from django.views.generic import ListView
+from django.urls import reverse_lazy
+
 
 # Create your views here.
 def curso(self):
@@ -56,4 +63,94 @@ def estudianteForm(request):
         miFormulario=EstudianteForm()
     return render (request, "AppCoder/estudianteForm.html",{"miFormulario":miFormulario})
 
-        
+def profesorForm(request):
+    if request.method == 'POST':
+        miFormulario = ProfesorForm(request.POST)
+        if miFormulario.is_valid():
+            data = miFormulario.cleaned_data
+            data = Profesor(nombre = data['nombre'], apellido = data['apellido'], email = data['email'], edad = data['edad'])
+            data.save()
+            return render(request, 'AppCoder/index.html')
+    else:
+        miFormulario = ProfesorForm()
+    return render(request, 'AppCoder/profesorForm.html', {"miFormulario":miFormulario})
+
+#leer Profesores
+def leerProfesores(request):
+    profesores= Profesor.objects.all() 
+    contexto={'profesores':profesores}
+    return render(request, 'AppCoder/leerProfesores.html', contexto)
+
+#eliminar profesores
+def eliminarProfesor(request, profesor_nombre):
+    profesor = Profesor.objects.get(nombre=profesor_nombre)
+    profesor.delete()
+    # vuelvo al menú
+    profesores = Profesor.objects.all()  # trae todos los profesores
+    contexto = {"profesores": profesores}
+    return render(request, "AppCoder/leerProfesores.html", contexto)
+
+#editar profesores
+
+def editarProfesor(request, profesor_nombre):
+
+    # Recibe el nombre del profesor que vamos a modificar
+    profesor = Profesor.objects.get(nombre=profesor_nombre)
+    # Si es metodo POST hago lo mismo que el agregar
+    if request.method == 'POST':
+        # aquí mellega toda la información del html
+        miFormulario = ProfesorForm(request.POST)
+
+        print(miFormulario)
+
+        if miFormulario.is_valid:  # Si pasó la validación de Django
+
+            informacion = miFormulario.cleaned_data
+            profesor.nombre = informacion['nombre']
+            profesor.apellido = informacion['apellido']
+            profesor.email = informacion['email']
+            profesor.edad = informacion['edad']
+
+            profesor.save()
+
+            # Vuelvo al inicio o a donde quieran
+            return render(request, "AppCoder/index.html")
+    # En caso que no sea post
+    else:
+        # Creo el formulario con los datos que voy a modificar
+        miFormulario = ProfesorForm(initial={'nombre': profesor.nombre, 'apellido': profesor.apellido,'email': profesor.email, 'edad': profesor.edad})
+
+    # Voy al html que me permite editar
+    return render(request, "AppCoder/editarProfesores.html", {"miFormulario": miFormulario, "profesor_nombre": profesor_nombre})
+
+#===============================================================
+
+class CursoListView(ListView):
+    model = Curso
+    context_object_name = "cursos"
+    template_name = "AppCoder/curso_lista.html"
+
+
+class CursoDetailView(DetailView):
+    model = Curso
+    template_name = "AppCoder/curso_detalle.html"
+
+
+class CursoCreateView(CreateView):
+    model = Curso
+    template_name = "AppCoder/curso_crear.html"
+    success_url = reverse_lazy('ListaCursos')
+    fields = ['nombre', 'camada']
+
+
+class CursoUpdateView(UpdateView):
+    model = Curso
+    template_name = "AppCoder/curso_editar.html"
+    success_url = reverse_lazy('ListaCursos')
+    fields = ['nombre', 'camada']
+
+class CursoDeleteView(DeleteView):
+    model = Curso
+    template_name = "AppCoder/curso_borrar.html"
+    success_url = reverse_lazy('ListaCursos')
+    
