@@ -30,5 +30,11 @@ urlpatterns = [
     path('cursos/<pk>/editar/', CursoUpdateView.as_view(), name = "EditarCurso"),
     path('cursos/<pk>/borrar/', CursoDeleteView.as_view(), name = "BorrarCurso"),
 
+    #LogIn -Register -LogOut
+
+    path('logIn/', login_view, name='LogIn'),
+    path('singUp/', register, name='SingUp'),
+    path('logOut/', LogoutView.as_view(template_name='AppCoder/logout.html'), name='LogOut')
+
 
 ]

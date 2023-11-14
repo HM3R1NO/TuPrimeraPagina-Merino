@@ -9,6 +9,20 @@ from django.views.generic.edit import CreateView ,UpdateView, DeleteView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 
+#LogIn
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.views import LogoutView
+#Register/SingIn
+#from django.contrib.auth.forms import UserCreationForm
+
+#Decorador. vistas solo despues de logearse (@login_required)
+from django.contrib.auth.decorators import login_required
+
+#Decorador para Clases.
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 
 # Create your views here.
 def curso(self):
@@ -32,6 +46,7 @@ def estudiantes(request):
 def entregables(request):
     return HttpResponse('vista entregables')
 
+@login_required
 def cursoForm(request):
     if request.method == "POST":
         curso=Curso(nombre=request.POST["nombre"], camada=request.POST["camada"]) #En la clase al profe le falto asignar las variables(nombre=...,camada=...) y por eso daba error.
@@ -125,32 +140,70 @@ def editarProfesor(request, profesor_nombre):
 
 #===============================================================
 
-class CursoListView(ListView):
+class CursoListView(LoginRequiredMixin,ListView):
     model = Curso
     context_object_name = "cursos"
     template_name = "AppCoder/curso_lista.html"
 
 
-class CursoDetailView(DetailView):
+class CursoDetailView(LoginRequiredMixin,DetailView):
     model = Curso
     template_name = "AppCoder/curso_detalle.html"
 
 
-class CursoCreateView(CreateView):
+class CursoCreateView(LoginRequiredMixin,CreateView):
     model = Curso
     template_name = "AppCoder/curso_crear.html"
     success_url = reverse_lazy('ListaCursos')
     fields = ['nombre', 'camada']
 
 
-class CursoUpdateView(UpdateView):
+class CursoUpdateView(LoginRequiredMixin,UpdateView):
     model = Curso
     template_name = "AppCoder/curso_editar.html"
     success_url = reverse_lazy('ListaCursos')
     fields = ['nombre', 'camada']
 
-class CursoDeleteView(DeleteView):
+class CursoDeleteView(LoginRequiredMixin,DeleteView):
     model = Curso
     template_name = "AppCoder/curso_borrar.html"
     success_url = reverse_lazy('ListaCursos')
-    
+
+    #LogIn-Register-LogOut=====================================
+
+#LogIn
+
+def login_view(request):
+
+    if request.method == "POST": #click al boton iniciar sesion
+        form_inicio = AuthenticationForm(request, data = request.POST)      
+        if form_inicio.is_valid(): #el formulario nos ayuda a validar
+            info = form_inicio.cleaned_data #data que se escribio en el formulario de login en modo diccionario 
+            usuario = info.get("username")
+            contra = info.get("password")
+            #acá hacemos la validación
+            user = authenticate(username=usuario, password=contra) #existe el usuario (retorna el usuario) ---- no existe usuario (retorna None)
+            if user:
+                login(request, user)    #iniciar sesion ya que el usuario si existe (credenciales correctas)
+                return render(request, "AppCoder/index.html", {"usuario":user})
+        else:
+            return render(request,"AppCoder/index.html", {"mensaje":"DATOS INCORRECTOS"})
+    form_inicio = AuthenticationForm() #formulario vacio
+    return render(request,"AppCoder/login.html", {"form":form_inicio} )
+
+#Register/SingUp
+
+def register(request):
+    if request.method == 'POST':
+            form = UserCreationForm(request.POST)
+            #form = UserRegisterForm(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                form.save()
+                return render(request,"AppCoder/index.html" ,  {"mensaje":"Usuario Creado :)"})
+    else:
+            form = UserCreationForm()
+            #form = UserRegisterForm()
+    return render(request,"AppCoder/singup.html" ,  {"form":form})
+
+
